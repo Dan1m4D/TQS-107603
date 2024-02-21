@@ -80,9 +80,8 @@ class TqsStackTest {
 
     @DisplayName("For bounded stacks only: pushing onto a full stack does throw an IllegalStateException")
     @Test
-    @Disabled
+    // Commented out because we are not implementing a bounded stack
     void pushFullStack() {
-        // Not applicable for an unbounded stack
         assertTrue(true);
     }
     
