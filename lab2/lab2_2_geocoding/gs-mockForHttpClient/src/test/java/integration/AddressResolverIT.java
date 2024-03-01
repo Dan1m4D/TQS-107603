@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AddressResolverIT {
+class AddressResolverIT {
 
     private AddressResolverService resolver;
     private ISimpleHttpClient httpClient;
@@ -34,26 +34,20 @@ public class AddressResolverIT {
 
 
     @Test
-    public void whenGoodCoordidates_returnAddress() throws IOException, URISyntaxException, ParseException {
+    void whenGoodCoordidates_returnAddress() throws IOException, URISyntaxException, ParseException {
 
-        //TODO
-
-        // repeat the same tests conditions from AddressResolverTest, without mocks
         Optional<Address> result = resolver.findAddressForLocation(40.63436, -8.65616);
 
         // return
-        Address expected = new Address("AvenidadaUniversidade", "Aveiro", "3810-489", "");
+        Address expected = new Address("Avenida da Universidade", "Aveiro", "3810-489", "");
 
         assertTrue(result.isPresent());
         assertEquals(expected, result.get());
     }
 
     @Test
-    public void whenBadCoordidates_thenReturnNoValidAddrress() throws IOException, URISyntaxException, ParseException {
-
-        //TODO
-        // repeat the same tests conditions from AddressResolverTest, without mocks
-
+    void whenBadCoordidates_thenReturnNoValidAddrress() throws IOException, URISyntaxException, ParseException {
+        
         Optional<Address> result = resolver.findAddressForLocation(-361, -361);
         // verify no valid result
         assertFalse(result.isPresent());
