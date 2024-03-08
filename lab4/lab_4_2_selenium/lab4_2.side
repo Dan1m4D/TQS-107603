@@ -1,0 +1,115 @@
+{
+  "id": "86e3913f-e0bd-4843-9407-42ec2ceb8ac5",
+  "version": "2.0",
+  "name": "lab4_2",
+  "url": "https://blazedemo.com",
+  "tests": [{
+    "id": "f7f8bf4b-663e-4d57-8b8f-d3f28f17c77f",
+    "name": "buy a trip",
+    "commands": [{
+      "id": "1ec10465-c8d8-4c02-8e36-86c27fd4d8b7",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3db41e1b-b7de-47d3-8983-c3f175e28f87",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1028x1089",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "64fbf82a-8f2f-4582-a9d6-693750a99158",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//input[@value='Find Flights']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8f68d3f7-ef3b-4a28-9feb-ddf922fcd531",
+      "comment": "",
+      "command": "assertTitle",
+      "target": "BlazeDemo - reserve",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f8add9cb-bd58-4e08-a82c-6b9d207537b4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=tr:nth-child(1) > td:nth-child(3)",
+      "targets": [
+        ["css=tr:nth-child(1) > td:nth-child(3)", "css:finder"],
+        ["xpath=//td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'43')]", "xpath:innerText"]
+      ],
+      "value": "43"
+    }, {
+      "id": "0529667a-5e85-4eba-abc2-ab858a370f15",
+      "comment": "",
+      "command": "click",
+      "target": "css=tr:nth-child(1) .btn",
+      "targets": [
+        ["css=tr:nth-child(1) .btn", "css:finder"],
+        ["xpath=//input[@value='Choose This Flight']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b5fc82a4-8593-4213-b6dd-c0149f67467a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-primary",
+      "targets": [
+        ["css=.btn-primary", "css:finder"],
+        ["xpath=//input[@value='Purchase Flight']", "xpath:attributes"],
+        ["xpath=//div[11]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a29dcef7-51ca-4997-87a1-d80887323400",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=tr:nth-child(3) > td:nth-child(2)",
+      "targets": [
+        ["css=tr:nth-child(3) > td:nth-child(2)", "css:finder"],
+        ["xpath=//tr[3]/td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'555 USD')]", "xpath:innerText"]
+      ],
+      "value": "555 USD"
+    }, {
+      "id": "5f4e7764-aa84-4d20-bd6f-728db22d29b9",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=tr:nth-child(6) > td:nth-child(2)",
+      "targets": [
+        ["css=tr:nth-child(6) > td:nth-child(2)", "css:finder"],
+        ["xpath=//tr[6]/td[2]", "xpath:position"],
+        ["xpath=//td[contains(.,'888888')]", "xpath:innerText"]
+      ],
+      "value": "888888"
+    }, {
+      "id": "9073f407-5079-4960-88a8-acaf4bccb022",
+      "comment": "",
+      "command": "assertTitle",
+      "target": "BlazeDemo Confirmation",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "0c8e40c8-1bf9-4a38-8c55-498b8e1bffab",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["f7f8bf4b-663e-4d57-8b8f-d3f28f17c77f"]
+  }],
+  "urls": ["https://blazedemo.com/"],
+  "plugins": []
+}
