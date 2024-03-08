@@ -1,4 +1,4 @@
-package test.java.tqs.cars.ControllerTests;
+package tqs.cars.ControllerTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -27,6 +27,6 @@ public class CarManagerService {
     }
 
     public Optional<Car> getCarDetails(Long carId) {
-        return Optional.of(carRepository.findByCarId(carId) );
+        return Optional.ofNullable(carRepository.findByCarId(carId) );
     }
 }
