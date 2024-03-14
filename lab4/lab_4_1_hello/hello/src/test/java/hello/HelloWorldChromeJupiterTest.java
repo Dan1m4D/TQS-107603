@@ -10,20 +10,10 @@ import org.slf4j.Logger;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import static java.lang.invoke.MethodHandles.lookup; // Import the necessary class
-import org.slf4j.Logger;
 import static org.slf4j.LoggerFactory.getLogger;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import static org.assertj.core.api.Assertions.assertThat; // Import the necessary class
 
-/**
- * Unit test for simple App.
- */
-
-public class AppTest {
+class HelloWorldChromeJupiterTest {
     static final Logger log = getLogger(lookup().lookupClass());
 
     private WebDriver driver;
