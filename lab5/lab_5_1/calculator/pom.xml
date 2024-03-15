@@ -5,25 +5,45 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>hello</groupId>
-  <artifactId>hello</artifactId>
+  <groupId>calculator</groupId>
+  <artifactId>calculator</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>hello</name>
+  <name>calculator</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <slf4j.version>2.0.12</slf4j.version>
+    <logback.version>1.5.3</logback.version>
+
     <junit-jupiter.version>5.10.2</junit-jupiter.version>
+    <junit-platform-suite.version>1.10.1</junit-platform-suite.version>
+    <cucumber.version>7.15.0</cucumber.version>
+
     <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
-    <selenium-java.version>4.18.1</selenium-java.version>
-    <selenium-jupiter.version>5.0.1</selenium-jupiter.version>
+
+    <java.version>17</java.version>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+
+    <project.encondig>UTF-8</project.encondig>
+    <project.build.sourceEncoding>${project.encondig}</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${project.encondig}</project.reporting.outputEncoding>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -31,24 +51,22 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-java</artifactId>
-      <version>${selenium-java.version}</version>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-suite</artifactId>
+      <version>${junit-platform-suite.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.github.bonigarcia</groupId>
-      <artifactId>selenium-jupiter</artifactId>
-      <version>${selenium-jupiter.version}</version>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
       <scope>test</scope>
-
     </dependency>
     <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.25.3</version>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit-platform-engine</artifactId>
+      <version>${cucumber.version}</version>
       <scope>test</scope>
-
     </dependency>
   </dependencies>
 
