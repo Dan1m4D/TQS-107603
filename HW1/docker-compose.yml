@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: 'bus_backend'
+
+    volumes:
+      - ./backend:/backend
+
+    networks:
+      - backend_network
+      - frontend_network
+
+    ports:
+      - '8080:8080'
+
+  frontend:
+    depends_on:
+      - backend
+
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: 'bus_frontend'
+
+    networks:
+      - frontend_network
+
+    volumes:
+      - ./frontend:/app
+
+    ports:
+      - '3000:3000'
+
+    command: yarn dev
+  
+networks:
+  frontend_network:
+    driver: bridge
+
+  backend_network:
+    driver: bridge
