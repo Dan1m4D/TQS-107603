@@ -43,61 +43,65 @@ public class TicketController {
 
     @PostMapping("/buy")
     public ResponseEntity<Ticket> buyTicket(@RequestBody Ticket ticket) {
-        try {
-            logger.info("Buying ticket: {}", ticket);
-            // Check if trip exists
-            if (!tripService.tripExists(ticket.getTripID())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip not found");
-            }
 
-            // Get trip details
-            Trip trip = tripService.getTrip(ticket.getTripID(), "EUR");
-
-            // Validate trip
-            if (trip == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip not found");
-            }
-
-            // Validate email
-            if (!validateEmail(ticket.getEmail())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
-            }
-
-            // Validate seat number
-            int givenSeatIndex = ticket.getSeatNumber() - trip.getSeats().get(0).getNumber();
-            if (givenSeatIndex < 0 || givenSeatIndex >= trip.getSeats().size()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid seat number");
-            }
-
-            // Set adjusted seat number
-            ticket.setSeatNumber(givenSeatIndex + 1);
-
-            // Validate seat availability
-            Seat seat = trip.getSeats().get(givenSeatIndex);
-            if (seat.isTaken()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat already occupied");
-            }
-
-            // Validate bus capacity
-            Bus tripBus = busService.getBus(trip.getBusID());
-            if (ticket.getSeatNumber() > tripBus.getSeats() || ticket.getSeatNumber() < 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid seat number");
-            }
-
-            // Validate bus full
-            int seatsTaken = (int) trip.getSeats().stream().filter(Seat::isTaken).count();
-            if (seatsTaken >= tripBus.getSeats()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bus full");
-            }
-
-            // Buy ticket
-            Ticket boughtTicket = ticketService.buyTicket(ticket);
-            logger.info("Ticket bought successfully: {}", boughtTicket);
-            return ResponseEntity.ok(boughtTicket);
-        } catch (Exception e) {
-            logger.error("Error occurred while buying ticket: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error occurred while buying ticket");
+        logger.info("Buying ticket: {}", ticket);
+        // Check if trip exists
+        if (!tripService.tripExists(ticket.getTripID())) {
+            logger.error("Trip with ID {} not found", ticket.getTripID());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip not found");
         }
+
+        // Get trip details
+        Trip trip = tripService.getTrip(ticket.getTripID(), "EUR");
+
+        // Validate trip
+        if (trip == null) {
+            logger.error("Trip with ID {} not found", ticket.getTripID());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip not found");
+        }
+
+        // Validate email
+        if (!validateEmail(ticket.getEmail())) {
+            logger.error("Invalid email");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
+        }
+
+        // Validate seat number
+        int givenSeatIndex = ticket.getSeatNumber() - trip.getSeats().get(0).getNumber();
+        if (givenSeatIndex < 0 || givenSeatIndex >= trip.getSeats().size()) {
+            logger.error("Invalid seat number");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid seat number");
+        }
+
+        // Set adjusted seat number
+        ticket.setSeatNumber(givenSeatIndex + 1);
+
+        // Validate seat availability
+        Seat seat = trip.getSeats().get(givenSeatIndex);
+        if (seat.isTaken()) {
+            logger.error("Seat already occupied");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seat already occupied");
+        }
+
+        // Validate bus capacity
+        Bus tripBus = busService.getBus(trip.getBusID());
+        if (ticket.getSeatNumber() > tripBus.getSeats() || ticket.getSeatNumber() < 0) {
+            logger.error("Invalid seat number");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid seat number");
+        }
+
+        // Validate bus full
+        int seatsTaken = (int) trip.getSeats().stream().filter(Seat::isTaken).count();
+        if (seatsTaken >= tripBus.getSeats()) {
+            logger.error("Bus full ");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bus full");
+        }
+
+        // Buy ticket
+        Ticket boughtTicket = ticketService.buyTicket(ticket);
+        logger.info("Ticket bought successfully: {}", boughtTicket);
+        return ResponseEntity.ok(boughtTicket);
+
     }
 
     @GetMapping("/list")

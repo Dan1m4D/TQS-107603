@@ -26,6 +26,7 @@
     <surefire-plugin-version>3.0.0-M9</surefire-plugin-version>
     <sonar.organization>dan1m4d</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
   </properties>
 
   <dependencies>
@@ -160,6 +161,12 @@
       <artifactId>junit-platform-suite</artifactId>
       <version>${junit-platform-suite.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.2.0</version>
     </dependency>
 
   </dependencies>
