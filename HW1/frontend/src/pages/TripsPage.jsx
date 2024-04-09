@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 const TripsPage = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
+  const [date, setDate] = useState("");
   const [currency, setCurrency] = useState("EUR");
   const [trips, setTrips] = useState([]);
   const navigate = useNavigate();
@@ -22,14 +23,17 @@ const TripsPage = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const origin = urlParams.get("origin");
       const destination = urlParams.get("destination");
+      const date = urlParams.get("date");
       setOrigin(origin);
       setDestination(destination);
+      setDate(date);
 
       await axios
         .get("/trips/list", {
           params: {
             origin: origin ? origin : null,
             destination: destination ? destination : null,
+            date: date ? date : null,
             currency: currency,
           },
         })
@@ -47,7 +51,7 @@ const TripsPage = () => {
       <section className="flex flex-row items-center justify-between m-8">
         <span className="flex items-center">
           <FaArrowLeft
-            className="mx-4 text-accent"
+            className="mx-4 cursor-pointer text-accent"
             size={25}
             onClick={() => navigate(-1)}
           />

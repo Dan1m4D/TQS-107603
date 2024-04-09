@@ -1,19 +1,25 @@
 package tqs.bus.services;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Map;
-
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class CurrencyService {
+
+    private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
+    private final HttpClient httpClient = HttpClient.newBuilder().build();
 
     private Set<String> currencies;
     private Map<String, Object> cachedRates = new HashMap<>();
@@ -21,7 +27,6 @@ public class CurrencyService {
     private long lastCaching = 0;
     private String apiKey = "3c3da1cd491ed199ff510778";
 
-    @Autowired
     public CurrencyService() {
     }
 
@@ -40,9 +45,13 @@ public class CurrencyService {
         return !cachedRates.isEmpty() && lastCaching != 0 && System.currentTimeMillis() < lastCaching + cacheTTL;
     }
 
-    public Set<String> listCurrencies() throws Exception {
-        if (currencies == null)
-            exchange("EUR", "USD");
+    public Set<String> listCurrencies() {
+        try {
+            if (currencies == null)
+                exchange("EUR", "USD");
+        } catch (Exception e) {
+            logger.error("Error occurred while listing currencies: {}", e.getMessage());
+        }
         return currencies;
     }
 
@@ -50,33 +59,39 @@ public class CurrencyService {
         if (isCacheValid()) {
             return Double.parseDouble(cachedRates.get(to).toString());
         } else {
-            String api_link = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/" + from;
-            String content = doRequest(api_link);
-            JSONObject obj = new JSONObject(content.toString());
-            cacheExchangeRates(obj.getJSONObject("conversion_rates").toMap());
-            currencies = obj.getJSONObject("conversion_rates").keySet();
-            double rate;
             try {
-                rate = obj.getJSONObject("conversion_rates").getDouble(to);
+                String apiLink = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/" + from;
+                String content = doRequest(apiLink);
+                JSONObject obj = new JSONObject(content);
+                cacheExchangeRates(obj.getJSONObject("conversion_rates").toMap());
+                currencies = obj.getJSONObject("conversion_rates").keySet();
+                return obj.getJSONObject("conversion_rates").getDouble(to);
             } catch (Exception e) {
+                logger.error("Error occurred while exchanging currency from {} to {}: {}", from, to, e.getMessage());
                 throw new Exception("Currency not found");
             }
-            return rate;
         }
     }
 
-    public String doRequest(String link) throws Exception {
-        URL url = new URL(link);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        StringBuilder content = new StringBuilder();
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
+    public String doRequest(String link) {
+        try {
+            logger.info("Making HTTP request to: {}", link);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(link))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != HttpURLConnection.HTTP_OK) {
+                logger.error("HTTP request failed with status code: {}", response.statusCode());
+                throw new IOException("HTTP request failed with status code: " + response.statusCode());
+            }
+            logger.info("HTTP request succeeded with status code: {}", response.statusCode());
+            return response.body();
+        } catch (IOException | InterruptedException e) {
+            logger.error("Error occurred while making HTTP request: {}", e.getMessage());
+            return null;
         }
-        in.close();
-        con.disconnect();
-        return content.toString();
     }
 }

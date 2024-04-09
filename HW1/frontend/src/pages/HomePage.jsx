@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const [origins, setOrigins] = useState([]);
   const [destinations, setDestinations] = useState([]);
+  const [date, setDate] = useState("");
   const [selectedOrigin, setSelectedOrigin] = useState("");
   const [selectedDestination, setSelectedDestination] = useState("");
 
@@ -41,7 +42,7 @@ const HomePage = () => {
           </h1>
           <div className="flex flex-row items-center">
             <span className="flex flex-col items-start mx-4 text-2xl ">
-              <h1 className="mx-2 font-semibold text-secondary">From:</h1>
+              <h1 className="mx-2 font-semibold text-accent">From:</h1>
               <select
                 className="w-[20vw] select select-bordered m-2 text-neutral border-2 border-primary"
                 onChange={(e) => setSelectedOrigin(e.target.value)}
@@ -59,7 +60,7 @@ const HomePage = () => {
               </select>
             </span>
             <span className="flex flex-col items-start mx-4 text-2xl ">
-              <h1 className="mx-2 font-semibold text-secondary">To:</h1>
+              <h1 className="mx-2 font-semibold text-accent">To:</h1>
               <select
                 className="w-[20vw] select select-bordered border-2 border-primary m-2 text-neutral"
                 onChange={(e) => setSelectedDestination(e.target.value)}
@@ -77,6 +78,18 @@ const HomePage = () => {
               </select>
             </span>
           </div>
+          <div className="flex flex-col items-start w-full p-4 text-2xl">
+            <h1 className="mx-2 font-semibold text-accent">
+              Date:
+            </h1>
+
+            <input
+              type="date"
+              value={date}
+              className="m-2 w-[100%] input input-primary text-neutral border-2 border-primary"
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
 
           <button
             className="m-4 btn btn-primary"
@@ -85,7 +98,9 @@ const HomePage = () => {
                 "/trips?origin=" +
                   selectedOrigin +
                   "&destination=" +
-                  selectedDestination
+                  selectedDestination +
+                  "&date=" +
+                  date
               );
             }}
           >

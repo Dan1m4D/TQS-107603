@@ -9,6 +9,7 @@ import {
   FaBus,
   FaClock,
   FaMoneyBillWave,
+  FaStar,
 } from "react-icons/fa";
 import { MdEventSeat } from "react-icons/md";
 
@@ -82,7 +83,7 @@ const TripDetails = () => {
       <section className="flex flex-row items-center justify-between m-8">
         <span className="flex items-center">
           <FaArrowLeft
-            className="mx-4 text-accent"
+            className="mx-4 cursor-pointer text-accent"
             size={25}
             onClick={() => navigate(-1)}
           />
@@ -127,9 +128,9 @@ const TripDetails = () => {
             {trip.seats?.map((seat) => (
               <label
                 key={seat.id}
-                className={`p-2 m-2 text-white rounded-lg cursor-pointer bg-accent ${
+                className={`w-12 p-2 flex flex-col items-center m-2 text-white rounded-lg cursor-pointer bg-accent ${
                   seat == selectedSeat ? "ring-primary ring" : ""
-                }`}
+                } `}
               >
                 <input
                   disabled={seat.taken}
@@ -151,6 +152,16 @@ const TripDetails = () => {
                   }`}
                   size={25}
                 />
+
+                <h1
+                  className={`${
+                    seat.seatType === "premium" && !seat.taken
+                      ? "text-amber-400"
+                      : seat.taken && "text-secondary"
+                  } mx-1`}
+                >
+                  {seat.number}
+                </h1>
               </label>
             ))}
           </div>
@@ -172,7 +183,7 @@ const TripDetails = () => {
             <span className="m-2">
               <h1 className="m-2 text-xl font-semibold text-accent">Name</h1>
               <input
-                {...register("name", { required: true })}
+                {...register("name", { required: "Please insert a name" })}
                 type="text"
                 placeholder="Name"
                 className="w-full input-bordered input input-primary"
