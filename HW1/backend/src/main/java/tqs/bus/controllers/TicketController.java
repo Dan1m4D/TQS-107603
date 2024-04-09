@@ -123,7 +123,7 @@ public class TicketController {
         }
     }
 
-    private boolean validateEmail(String email) {
+    public static boolean validateEmail(String email) {
         return email.matches(".+@.+\\..+");
     }
 }
