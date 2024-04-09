@@ -31,20 +31,17 @@ public class BusController {
 
     @GetMapping("/get")
     public ResponseEntity<Bus> getBus(@RequestParam int id) {
-        try {
-            logger.info("Fetching bus with ID {}", id);
-            Bus bus = busService.getBus(id);
-            if (bus != null) {
-                logger.info("Bus with ID {} found", id);
-                return ResponseEntity.ok(bus);
-            } else {
-                logger.warn("Bus with ID {} not found", id);
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bus not found!");
-            }
-        } catch (Exception e) {
-            logger.error("Error occurred while getting bus with ID {}: {}", id, e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
+
+        logger.info("Fetching bus with ID {}", id);
+        Bus bus = busService.getBus(id);
+        if (bus != null) {
+            logger.info("Bus with ID {} found", id);
+            return ResponseEntity.ok(bus);
+        } else {
+            logger.warn("Bus with ID {} not found", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Bus not found!");
         }
+
     }
 
     @GetMapping("/list")
