@@ -11,7 +11,7 @@ import tqs.bus.models.Ticket;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Integer>{
 
-    public Ticket findById(int id);
+    public Ticket findById(String id);
 
     public List<Ticket> findByTripID(int tripID);
 
