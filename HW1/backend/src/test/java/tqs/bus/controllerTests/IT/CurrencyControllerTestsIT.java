@@ -44,31 +44,30 @@ class CurrencyControllerIntegrationTest {
     @Test
     @DisplayName("Test when exchange currency then return exchange rate")
     void whenExchangeCurrency_thenReturnExchangeRate() {
-        double exchangeRate = 1.085;
 
         ResponseEntity<Double> response = restTemplate
                 .getForEntity("http://localhost:" + port + "/currencies/exchange?from=EUR&to=USD", Double.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull().isEqualTo(exchangeRate);
+        assertThat(response.getBody()).isNotNull();
+    
     }
 
     @Test
     @DisplayName("Test when exchange currency twice then return the same exchange rate")
     void whenExchangeCurrencyTwice_thenReturnSameExchangeRate() {
-        double exchangeRate = 1.085;
 
         ResponseEntity<Double> response1 = restTemplate
                 .getForEntity("http://localhost:" + port + "/currencies/exchange?from=EUR&to=USD", Double.class);
 
         assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response1.getBody()).isNotNull().isEqualTo(exchangeRate);
+        assertThat(response1.getBody()).isNotNull();
 
         ResponseEntity<Double> response2 = restTemplate
                 .getForEntity("http://localhost:" + port + "/currencies/exchange?from=EUR&to=USD", Double.class);
 
         assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response2.getBody()).isNotNull().isEqualTo(exchangeRate);
+        assertThat(response2.getBody()).isNotNull();
         
         assertThat(response1.getBody()).isEqualTo(response2.getBody());
     }

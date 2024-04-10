@@ -3,6 +3,7 @@ package tqs.bus.services;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.util.Set;
 @Service
 public class CurrencyService {
 
+    private final String rates = "conversion_rates";
+
     private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
     private final HttpClient httpClient = HttpClient.newBuilder().build();
 
@@ -27,6 +30,7 @@ public class CurrencyService {
     private long lastCaching = 0;
     private String apiKey = "3c3da1cd491ed199ff510778";
 
+    @Autowired
     public CurrencyService() {
     }
 
@@ -63,9 +67,9 @@ public class CurrencyService {
                 String apiLink = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/" + from;
                 String content = doRequest(apiLink);
                 JSONObject obj = new JSONObject(content);
-                cacheExchangeRates(obj.getJSONObject("conversion_rates").toMap());
-                currencies = obj.getJSONObject("conversion_rates").keySet();
-                return obj.getJSONObject("conversion_rates").getDouble(to);
+                cacheExchangeRates(obj.getJSONObject(rates).toMap());
+                currencies = obj.getJSONObject(rates).keySet();
+                return obj.getJSONObject(rates).getDouble(to);
             } catch (Exception e) {
                 logger.error("Error occurred while exchanging currency from {} to {}: {}", from, to, e.getMessage());
                 throw new Exception("Currency not found");

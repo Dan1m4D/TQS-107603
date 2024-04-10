@@ -32,6 +32,9 @@ public class TicketController {
 
     private static final Logger logger = LoggerFactory.getLogger(TicketController.class);
 
+    private final String invalid_seat = "Invalid seat number";
+    private final String missing_trip = "Trip not found";
+
     @Autowired
     private TicketService ticketService;
 
@@ -48,7 +51,7 @@ public class TicketController {
         // Check if trip exists
         if (!tripService.tripExists(ticket.getTripID())) {
             logger.error("Trip with ID {} not found", ticket.getTripID());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, missing_trip);
         }
 
         // Get trip details
@@ -57,7 +60,7 @@ public class TicketController {
         // Validate trip
         if (trip == null) {
             logger.error("Trip with ID {} not found", ticket.getTripID());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, missing_trip);
         }
 
         // Validate email
@@ -69,8 +72,8 @@ public class TicketController {
         // Validate seat number
         int givenSeatIndex = ticket.getSeatNumber() - trip.getSeats().get(0).getNumber();
         if (givenSeatIndex < 0 || givenSeatIndex >= trip.getSeats().size()) {
-            logger.error("Invalid seat number");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid seat number");
+            logger.error(invalid_seat);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid_seat);
         }
 
         // Set adjusted seat number
@@ -86,8 +89,8 @@ public class TicketController {
         // Validate bus capacity
         Bus tripBus = busService.getBus(trip.getBusID());
         if (ticket.getSeatNumber() > tripBus.getSeats() || ticket.getSeatNumber() < 0) {
-            logger.error("Invalid seat number");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid seat number");
+            logger.error(invalid_seat);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, invalid_seat);
         }
 
         // Validate bus full

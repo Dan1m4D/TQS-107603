@@ -12,12 +12,14 @@ class ValidationTest {
     
     private static TicketController controller;
 
+    @SuppressWarnings("static-access")
     @Test
     @DisplayName("Test email validation")
     void testEmailValidation() {
         assertTrue(controller.validateEmail("daniel.madureira@ua.pt"));
     }
 
+    @SuppressWarnings("static-access")
     @Test
     @DisplayName("Test invalid email validation")
     void testInvalidEmailValidation() {
